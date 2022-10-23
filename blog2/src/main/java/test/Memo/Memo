@@ -1,0 +1,75 @@
+H2 DB 쓸때 User는 예약어. 쓰지 말것 ..
+DB에서 orElseThrow(예외)가 작동을 하지 않음. why?
+@RequierArgument 쓰고 private final 안하면 nullPointExeption 발생하면서 해당 메서드가 호출이 안됨.
+댓글쓰기에서 네이티브쿼리 쓰는거
+
+** 카카오 로그인 **
+
+웹 서버 주소 : http://localhost:8080
+클라이언트 키 : 34dc765c12bd0dfe35c15917ee571b87
+로그인 요청 주소 : https://kauth.kakao.com/oauth/authorize?client_id=34dc765c12bd0dfe35c15917ee571b87&redirect_uri=http://localhost:8080/auth/kakao/callback&response_type=code
+로그인 요청 콜백 주소 : http://localhost:8080/auth/kakao/callback
+콜백 받은 코드 : http://localhost:8080/auth/kakao/callback?code=gDv1rP7wy7pv7Vf87GIWxiI2rKquv77p9e2WIF-lhdnQm_SgyhwdMQYbv9VXKse_2R3OiwopyWAAAAGDeZZq_A
+토큰 발급 요청 주소 : https://kauth.kakao.com/oauth/token
+토큰을 사용한 사용자 정보 요청주소: https://kapi.kakao.com/v2/user/me
+===================== 환경 설정 =================================
+1. 카카오 개발자 웹페이지로 가서 내 어플리케이션 추가하고 앱키를 가져온다.
+앱키(REST API): 34dc765c12bd0dfe35c15917ee571b87
+
+2. 플랫폼 등록 : 사이트 도메인 (http://localhost:8080)
+
+3. 내 애플리케이션 >제품 설정 >카카오 로그인 > 활성화 On
+
+4. RedirectUrl 설정 : http://localhost:8080/auth/kakao/callback
+ - 카카오 로그인이 정상수행되었을 때 응답을 받을 주소(로그인 요청 콜백 주소)
+
+5. 동의항목 설정(웹페이지에서 체크)
+====================인가코드 받기==================================
+GET /oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code HTTP/1.1
+Host: kauth.kakao.com
+
+1. 로그인 요청 주소(Get)
+https://kauth.kakao.com/oauth/authorize?client_id=34dc765c12bd0dfe35c15917ee571b87&redirect_uri=http://localhost:8080/auth/kakao/callback&response_type=code
+2. 응답받은 코드(동적임)
+yiHDnl1hgaYvbTtAMKcQto8H9G-uWlAenMHlVcMEj9-xsJj2xQZ6AvYb6ijUNcNGdoFivQo9dVwAAAGDejTdgQ
+====================엑세스 토큰 받기 ===============================
+POST /oauth/token HTTP/1.1
+Host: kauth.kakao.com
+Content-type: application/x-www-form-urlencoded;charset=utf-8
+
+1. 토큰 발급 요청 주소(Post) - http body에 데이터를 전달(5가지 데이터를 담아서 전달)
+https://kauth.kakao.com/oauth/token
+Mime Type : application/x-www-form-urlencoded;charset=utf-8 (key = value)
+Name	            Type	        Description	                                    Required
+grant_type	        String      	authorization_code로 고정                        O
+client_id	        String      	앱 REST API 키                                   O
+redirect_uri	    String      	인가 코드가 리다이렉트된 URI	                    O
+code	            String      	인가 코드 받기 요청으로 얻은 인가 코드	            O
+client_secret	    String      	토큰 발급 시, 보안을 강화하기 위해 추가 확인하는 코드   X
+
+grant_type = authorization_code
+client_id = 34dc765c12bd0dfe35c15917ee571b87
+redirect_uri = http://localhost:8080/auth/kakao/callback
+code = gDv1rP7wy7pv7Vf87GIWxiI2rKquv77p9e2WIF-lhdnQm_SgyhwdMQYbv9VXKse_2R3OiwopyWAAAAGDeZZq_A
+
+카카오 토큰 요청 완료: 토큰에 대한 응답값 : <200,
+"access_token":"XNCdMbVshyL3A2VO4b4fuWAZCxws-qlBXFNIUJt_Cj102wAAAYN6PgOn",
+"token_type":"bearer",
+"refresh_token":"M3ZjTo2gCMwe8kkZzFa5vv2PfP9ikRYvYnDtCv0FCj102wAAAYN6PgOl",
+"expires_in":21599,
+"scope":"account_email profile_nickname",
+"refresh_token_expires_in":5183999
+===================== 토큰을 사용한 사용자 정보 가져오기 =================================
+GET/POST /v2/user/me HTTP/1.1
+Host: kapi.kakao.com
+Authorization: Bearer ${ACCESS_TOKEN}/KakaoAK ${APP_ADMIN_KEY}
+Content-type: application/x-www-form-urlencoded;charset=utf-8
+
+토큰을 사용한 사용자 정보 요청주소
+https://kapi.kakao.com/v2/user/me
+
+헤더 값
+Authorization: Bearer ${ACCESS_TOKEN}/KakaoAK ${APP_ADMIN_KEY}
+Content-type: application/x-www-form-urlencoded;charset=utf-8
+
+

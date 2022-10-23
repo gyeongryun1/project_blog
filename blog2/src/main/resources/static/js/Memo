@@ -1,0 +1,2 @@
+<input> 태그는 value()
+그 외에는 textContent()

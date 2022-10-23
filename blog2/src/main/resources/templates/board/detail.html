@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<block th:replace="~{fragment/header :: header}"></block>
+
+<body>
+<div class="container">
+    <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
+    <block th:if="${principal.member.id == board.member.id}">
+        <a th:href="@{/board/{boardId}/updateForm(boardId=${board.id})}" class="btn btn-warning">수정</a>
+        <button id="btn-delete" class="btn btn-danger">삭제</button>
+    </block>
+
+    <div>
+        글 번호: <span id="id">[[${board.id}]]</span>
+        작성자: <span><i>[[${board.member.username}]]</i></span>
+        조회수: <span><i>[[${board.count}]]</i></span>
+    </div>
+    <div class="form-group">
+        <h3 th:text="${board.title}">title</h3>
+    </div>
+    <hr/>
+    <div class="form-group">
+        <div th:utext="${board.content}"></div>
+    </div>
+    <hr/>
+    <!--    <div th:each="path ,fileStat:${filePath}" th:text="${path}"></div>-->
+    <div th:each="uploadFile ,fileStat:${board.uploadFiles}">
+        <a th:href="@{/board/{boardId}/attach/{uploadFileName}(boardId=${board.id},uploadFileName=${uploadFile.uploadFileName})}" th:text="${uploadFile.uploadFileName}"></a>
+    </div>
+        <hr/>
+
+        <form>
+            <input id="boardId" type="hidden" name="boardId" th:value="${board.id}">
+            <input id="memberId" type="hidden" name="memberId" th:value="${principal.member.id}">
+            <div class="card">
+                <div class="card-body">
+                    <textarea id="reply-content" name="content" class="form-control" row="1"></textarea>
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+        </form>
+        </br>
+        <button id="btn-reply-save" class="btn btn-primary">등록</button>
+        <br/>
+
+        <div class="card">
+            <div class="card-header"> 댓글 리스트</div>
+            <ul id="reply-box" class="list-group">
+                <block th:each="reply, replyStat:${board.replies}">
+                    <li th:id="|reply-${reply.id}|" class="list-group-item d-flex justify-content-between">
+                        <div th:text="${reply.content}">댓글 내용</div>
+                        <div class="d-flex">
+                            <div class="font-italic" th:text="${reply.member.username} ">작성자: zxc &nbsp;</div> &nbsp;
+                            <button th:if="${principal.member.id} == ${reply.member.id}"
+                                    th:onclick="|index.replyDelete(${board.id},${reply.id})|" class="badge">삭제
+                            </button>
+                        </div>
+                    </li>
+                </block>
+            </ul>
+        </div>
+        <hr/>
+
+
+    </div>
+    </br>
+    <script src="/js/board.js"></script>
+</div>
+</body>
+</html>

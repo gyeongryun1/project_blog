@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<block th:fragment="header">
+    <head>
+        <title>My Blog Sample</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script
+                src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous"
+        ></script>
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet"/>
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    </head>
+
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h1>Sample Blog</h1>
+    </div>
+        <h5 th:if="${#authorization.expr('isAuthenticated()')}" th:text="|username : ${#authentication.name}|"></h5>
+        <h5 th:if="${#authorization.expr('isAuthenticated()')}" th:text="|role : ${role}|">??</h5>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="/">홈</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul th:unless="${#authorization.expr('isAuthenticated()')}" class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/auth/loginForm">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li>
+                <li  class="nav-item"><a class="nav-link" href="/auth/joinForm">회원가입</a>
+
+            </ul>
+            <ul th:if="${#authorization.expr('isAuthenticated()')}" class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
+                <li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user/updateForm">회원정보</a></li>
+                <li th:if="${role} == ADMIN"  class="nav-item"><a class="nav-link" href="/admin/adminHome">관리자 페이지</a>
+
+            </ul>
+        </div>
+    </nav>
+<br/>
+</block>
+
+</html>

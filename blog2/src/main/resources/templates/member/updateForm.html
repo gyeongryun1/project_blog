@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<style>
+    .box {
+      width: 100px;
+      height: 100px;
+
+      background: #ff22dd;
+    }
+  </style>
+<block th:replace="~{fragment/header :: header}"></block>
+<body>
+<div class="container">
+    <h2>회원정보 수정</h2>
+    <form>
+        <input type="hidden" id="id" th:value="${principal.member.id}"/>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" th:value="${principal.member.username}" class="form-control" id="username" placeholder="Enter username" name="username" readonly>
+        </div>
+
+        <block th:if="${#strings.isEmpty(principal.member.oauth)}">
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+        </div>
+        </block>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" th:value="${principal.member.email}" class="form-control" id="email" placeholder="Enter email" name="email">
+        </div>
+    </form>
+    <button id="btn-update" class="btn btn-primary">회원수정완료</button>
+</div>
+
+<script src="/js/member.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<block th:replace="~{fragment/header :: header}"></block>
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 페이지</title>
+  <style>
+      table {
+        width: 50%;
+        border: 1px solid #333333;
+      }
+      td {
+        padding: 5px;
+        border: 1px solid #333333;
+      }
+    </style>
+</head>
+<body>
+
+<table>
+  <tr>
+    <td>Id</td>
+    <td>User name</td>
+    <td>Email</td>
+    <td>role</td>
+    <td>Create date</td>
+    <td>Oauth</td>
+    <td>Block</td>
+  </tr>
+  <block th:each="member, memberStat : ${members}">
+    <tr>
+      <td th:text = ${member.id}></td>
+      <td th:text = ${member.username}></td>
+      <td th:text = ${member.email}></td>
+      <td th:text = ${member.role}></td>
+      <td th:text = ${member.createDate}></td>
+      <td th:text = ${member.oauth}></td>
+      <td>
+        <button th:if="${member.role == T(test.blog2.model.MemberAuth).BLOCK}" th:onclick="|index.unBlock(${member.id})|" class="badge">차단 해제</button>
+        <button th:if="${member.role == T(test.blog2.model.MemberAuth).MEMBER}" th:onclick="|index.block(${member.id})|" class="badge">차단</button>
+      </td>
+    </tr>
+  </block>
+</table>
+
+<script src="/js/member.js"></script>
+</body>
+</html>

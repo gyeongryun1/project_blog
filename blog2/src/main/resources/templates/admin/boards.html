@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<block th:replace="~{fragment/header :: header}"></block><head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+</head>
+<body>
+
+<block th:each="board : ${boards}">
+    <div class="container">
+        <div class="card">
+        <div class="card-body">
+            <a style="float:left" th:href="@{/board/{boardId}(boardId=${board.id})}" class="card-title" th:text="|제목 : ${board.title}"|>제목</a>
+                    <p th:text="|&nbsp;&nbsp;&nbsp; 작성자: ${board.member.username} &nbsp;&nbsp;&nbsp; Create Data: ${board.createDate}|"></p>
+                    <p th:text="|${board.hide}|"></p>
+            <button th:onclick="|index.boardDeleteAdmin(${board.id})|" class="badge">삭제</button>
+            <button th:if="${#strings.isEmpty(board.hide)}"th:onclick="|index.boardHide(${board.id})|" class="badge">숨기기</button>
+            <button th:if="${not #strings.isEmpty(board.hide)}" th:onclick="|index.boardShow(${board.id})|" class="badge">보이기</button>
+            </li>
+        </div>
+        </div>
+    </div>
+</block>
+
+<ul class="pagination justify-content-center">
+    <li class="page-item" th:unless="${boards.number} == 0 "><a class="page-link" th:href="@{/admin/boards/(page=${boards.number-1})}">Previous</a></li>
+    <Block th:each="board, boardsStat : ${#numbers.sequence(0,boards.totalPages-1)}">
+        <li class="page-item">
+            <a class="page-link" th:text="${boardsStat.count}" th:href="@{/admin/boards/(page=${boardsStat.index})}"></a>
+        </li>
+    </Block>
+    <li class="page-item" th:if="${boards.number} lt ${boards.totalPages-1}" ><a class="page-link" th:href="@{/admin/boards/(page=${boards.number+1})}">Next</a></li>
+</ul>
+
+
+
+<script src="/js/board.js"></script>
+
+
+</body>
+</html>

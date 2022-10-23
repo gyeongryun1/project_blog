@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+
+<block th:replace="~{fragment/header :: header}"></block>
+
+<body>
+<div class="container">
+    <form>
+        <input type="hidden" id="id" th:value="${board.id}"/>
+        <div class="form-group"><input type="text" class="form-control" id="title" placeholder="Enter title" name="title" th:value="${board.title}"></div>
+        <div class="form-group">
+            <textarea name="content" class="form-control summernote" rows="5" id="content">[[${board.content}]]</textarea>
+        </div>
+        <div>
+            첨부파일 <input id="files" type="file" multiple="multiple" name="files" >
+        </div>
+    </form>
+    <button id="btn-update" class="btn btn-primary">수정완료</button>
+
+</div>
+<div id="summernote"></div>
+<script>
+      $('.summernote').summernote({
+        tabsize: 2,
+        height: 500
+      });
+    </script>
+<script src="/js/board.js"></script>
+
+</br>
+
+</body>
+</html>
