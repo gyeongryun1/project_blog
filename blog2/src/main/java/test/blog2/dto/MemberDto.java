@@ -22,4 +22,5 @@ public class MemberDto {
     @NotBlank
     private String email;
     private String oauth;
+
 }

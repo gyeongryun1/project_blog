@@ -41,18 +41,6 @@ public class RepositoryTest {
         memberService.관리자생성(member);
     }
 
-    @Transactional
-    @Test
-    public void update() {
-        Member persistence = memberRepository.findById(1L).orElseThrow();
-        String inputPwd = "zxc";
-        String password = passwordEncoder.encode(inputPwd);
-
-        persistence.setPassword(password);
-        System.out.println("password = " + password);
-    }
-//        (createDate, email, password, role, username)
-
     @Test
     public void test() {
         Member member = memberRepository.findByUsername("azxc").orElseGet(() -> {
