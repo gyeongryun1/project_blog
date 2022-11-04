@@ -77,7 +77,8 @@ public class BoardController {
     public String updateForm(@PathVariable Long id,Model model) {
         Board findBoard = boardService.글상세보기2(id);
         model.addAttribute("board", findBoard);
-        return "/board/updateForm";
+//        return "/board/updateForm";
+        return "board/updateForm";
     }
 
     @GetMapping("/board/{id}")
@@ -89,7 +90,8 @@ public class BoardController {
         model.addAttribute("principal", principal);
         model.addAttribute("uploadFiles", uploadFiles);
 
-        return "/board/detail";
+//        return "/board/detail";
+        return "board/detail";
     }
 
     @GetMapping("/")
@@ -107,7 +109,8 @@ public class BoardController {
     @GetMapping("/admin/adminHome")
     public String adminHome(Model model,@AuthenticationPrincipal PrincipalDetail principal) {
         model.addAttribute("role", String.valueOf(principal.getMember().getRole()));
-        return "/admin/adminHome";
+//        return "/admin/adminHome";
+        return "admin/adminHome";
     }
 
     @GetMapping("/admin/boards")
@@ -116,17 +119,21 @@ public class BoardController {
         model.addAttribute("boards", boards);
         model.addAttribute("role", String.valueOf(principal.getMember().getRole()));
 
-        return "/admin/boards";
+//        return "admin/boards";
+        return "admin/boards";
     }
 
     @GetMapping("/board/saveForm")
     public String save(Model model, @AuthenticationPrincipal PrincipalDetail principal) {
         model.addAttribute("role", String.valueOf(principal.getMember().getRole()));
-        return "/board/saveForm";
+//        return "/board/saveForm";
+        return "board/saveForm";
     }
 
     @GetMapping("/board/updateForm")
     public String update() {
-        return "/board/update";
+
+//        return "/board/update";
+        return "board/update";
     }
 }

@@ -48,7 +48,8 @@ public class MemberController {
     public String save(@Validated @ModelAttribute MemberDto memberDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info("errors={}",bindingResult);
-            return "/member/joinForm";
+//            return "/member/joinForm";
+            return "member/joinForm";
         }
         memberService.회원가입(memberDto);
 
@@ -60,24 +61,30 @@ public class MemberController {
         List<Member> members = memberService.전체회원();
         model.addAttribute("role", String.valueOf(principal.getMember().getRole()));
         model.addAttribute("members", members);
-        return "/admin/member";
+//        return "/admin/member";
+        return "admin/member";
     }
     @GetMapping("/user/updateForm")
     public String updateForm(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
         model.addAttribute("principal", principal);
         model.addAttribute("role", String.valueOf(principal.getMember().getRole()));
 
-        return "/member/updateForm";
+//        return "/member/updateForm";
+        return "member/updateForm";
     }
 
     @GetMapping("/auth/joinForm")
     public String joinForm(MemberDto memberDto) {
-        return "/member/joinForm";
+
+//        return "/member/joinForm";
+        return "member/joinForm";
     }
 
     @GetMapping("/auth/loginForm")
     public String loginForm() {
-        return "/member/loginForm";
+
+//        return "/member/loginForm";
+        return "member/loginForm";
     }
 
     @GetMapping("/auth/kakao/callback")
