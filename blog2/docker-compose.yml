@@ -1,19 +1,19 @@
 version: '3.3'
 
 services:
-  #service 1: definition of mysql database
   db:
     image: mysql:latest
+#    image: mariadb:latest
+    volumes:
+      - mysql-data:/var/lib/mysql
     container_name: mysql-db2
-#    volumes:
-#      - ./:/app
     environment:
-#      - MYSQL_USER=root
+      #      - MYSQL_USER=root
       - MYSQL_ROOT_PASSWORD=pwd
       - MYSQL_DATABASE=blog
     ports:
       - "3306:3306"
-#    restart: always
+  #    restart: always
 
   #service 2: definition of your spring-boot app
   customerservice:                        #it is just a name, which will be used only in this file.
@@ -30,6 +30,9 @@ services:
       - db                                #dependency name (which is defined with this name 'db' in this file earlier)
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db2:3306/blog?createDatabaseIfNotExist=true
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db2:3306/blog?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: pwd
+
+volumes:
+  mysql-data:
+
