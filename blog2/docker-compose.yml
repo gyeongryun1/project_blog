@@ -23,7 +23,8 @@ services:
       context: .                          #docker file path (. means root directory)
       dockerfile: Dockerfile              #docker file name
     ports:
-      - "8084:8084"                       #docker containter port with your os port
+#      - "8084:8084"                       #docker containter port with your os port
+      - "80:80"                       #docker containter port with your os port
 #    restart: always
 
     depends_on:                           #define dependencies of this app
@@ -36,3 +37,8 @@ services:
 volumes:
   mysql-data:
 
+#  sudo docker network create blog-net
+#  sudo docker run -d --network blog-net --network-alias mysql -v mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=pwd -e MYSQL_DATABASE=blog gyeongryun/mysql
+#  sudo docker run -it --network blog-net nicolaka/netshoot
+#  dig mysql
+#  sudo docker run -dp 80:80 --network blog-net -e MYSQL_HOST=mysql -e SPRING_DATASOURCE_URL:jdbc:mysql://mysql-db2:3306/blog?createDatabaseIfNotExist=true -e SPRING_DATASOURCE_USERNAME:root -e SPRING_DATASOURCE_PASSWORD:pwd gyeongryun/blog-service
